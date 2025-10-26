@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Коины — Нейроград</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="lines" id="lines"></div>
+
+<div class="main-title">Коины</div>
+
+<div class="main-content glow-box">
+<p>Коины — внутренняя валюта Нейрограда.</p>
+<p>Как заработать коины:</p>
+<ul>
+<li>Выполнение заданий</li>
+<li>Участие в мини-играх</li>
+<li>Привлечение друзей</li>
+<li>Участие в кланах и событиях</li>
+</ul>
+<p>Коины можно тратить на:</p>
+<ul>
+<li>Внутриигровые предметы</li>
+<li>Улучшения профиля</li>
+<li>Эксклюзивные бонусы и события</li>
+</ul>
+</div>
+
+<script>
+const linesContainer = document.getElementById('lines');
+for(let i=0;i<50;i++){
+  const line = document.createElement('div');
+  line.className = 'line';
+  line.style.left = Math.random()*100 + '%';
+  line.style.animationDuration = (5 + Math.random()*5) + 's';
+  linesContainer.appendChild(line);
+}
+</script>
+
+</body>
+</html>

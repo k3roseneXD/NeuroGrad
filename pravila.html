@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Правила — Нейроград</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="lines" id="lines"></div>
+
+<div class="main-title">Правила</div>
+
+<div class="main-content glow-box">
+<p>Основные правила проекта:</p>
+<ul>
+<li>Соблюдать нормы общения</li>
+<li>Не нарушать правила кланов</li>
+<li>Не использовать запрещённые методы и чит-коды</li>
+<li>Нарушение правил ведёт к блокировке</li>
+</ul>
+</div>
+
+<script>
+const linesContainer = document.getElementById('lines');
+for(let i=0;i<50;i++){
+  const line = document.createElement('div');
+  line.className = 'line';
+  line.style.left = Math.random()*100 + '%';
+  line.style.animationDuration = (5 + Math.random()*5) + 's';
+  linesContainer.appendChild(line);
+}
+</script>
+
+</body>
+</html>

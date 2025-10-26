@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Связь с нами — Нейроград</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="lines" id="lines"></div>
+
+  <div class="main-title">Связь с нами</div>
+  <p class="subtitle">Если у тебя есть вопросы, идеи или предложения — напиши нам 💜</p>
+
+  <div class="contact-container glow-box">
+    <p>📨 Связаться можно напрямую через Telegram:</p>
+    <div class="contacts">
+      <div class="contact-card">
+        <p><strong>👤 Agapovich</strong></p>
+        <a href="https://t.me/agapovich" target="_blank">@agapovich</a>
+      </div>
+      <div class="contact-card">
+        <p><strong>💻 Code Zipstyle</strong></p>
+        <a href="https://t.me/Code_Zipstyle" target="_blank">@Code_Zipstyle</a>
+      </div>
+    </div>
+    <p>Мы всегда открыты для обратной связи и стараемся отвечать как можно быстрее 🚀</p>
+  </div>
+
+  <script>
+  // Фоновые линии (эффект как в index.html)
+  const linesContainer = document.getElementById('lines');
+  for(let i=0;i<50;i++){
+    const line = document.createElement('div');
+    line.className = 'line';
+    line.style.left = Math.random()*100 + '%';
+    line.style.animationDuration = (5 + Math.random()*5) + 's';
+    linesContainer.appendChild(line);
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌌 Нейроград | ГЛАВНАЯ СЕТЬ</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+    /* --- Variables and Transitions --- */
+    :root {
+        --bg-color: #030019;
+        --dark-bg: #0a0226;
+        --accent: #8b5cf6; 
+        --accent-glow: #b366ff;
+        --text-color: #eae6ff;
+        --muted-text: #a79bd6;
+        --tg-color: #64b5f6;
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --transition-duration: 0.4s;
+        --sidebar-width: 250px;
+        --stat-color: #a766ff; 
+        --error-red: #ff3366; 
+        --important-bg: #220a4d; 
+    }
+
+    * { box-sizing: border-box; transition: all var(--transition-duration) ease-in-out; }
+    
+    body {
+        margin: 0; padding: 0; font-family: 'Inter', sans-serif; color: var(--text-color);
+        background: var(--dark-bg); overflow-x: hidden; min-height: 100vh; display: flex;
+        background: radial-gradient(circle at center, var(--dark-bg) 0%, var(--bg-color) 100%);
+    }
+
+    /* --- Canvas (Particles Background) --- */
+    #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+
+    /* --- Sidebar Styles (Unchanged) --- */
+    .sidebar {
+        width: var(--sidebar-width); background: rgba(0, 0, 0, 0.5); border-right: 2px solid var(--accent);
+        box-shadow: 2px 0 20px rgba(139, 92, 246, 0.6); padding: 20px 0; position: fixed;
+        height: 100%; z-index: 20; display: flex; flex-direction: column;
+    }
+    .sidebar h2 {
+        font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--accent-glow);
+        text-align: center; margin-bottom: 30px; text-shadow: 0 0 5px var(--accent-glow);
+    }
+    .sidebar nav { flex-grow: 1; }
+    .sidebar nav a {
+        display: flex; align-items: center; padding: 15px 25px; text-decoration: none;
+        color: var(--muted-text); font-family: 'Share Tech Mono', monospace;
+        border-left: 5px solid transparent; transition: all 0.2s ease-in-out; gap: 10px;
+    }
+    .sidebar nav a::before { content: '▸'; font-size: 1.2em; line-height: 1; color: var(--muted-text); }
+    .sidebar nav a:hover { color: var(--text-color); background: rgba(139, 92, 246, 0.15); border-left: 5px solid var(--accent-glow); }
+    .sidebar nav a.active { 
+        color: var(--text-color); background: rgba(139, 92, 246, 0.3); border-left: 5px solid var(--accent); font-weight: 600; 
+    }
+    .sidebar-footer {
+        width: 100%; text-align: center; font-size: 0.8rem; color: rgba(255, 255, 255, 0.3);
+        font-family: 'Share Tech Mono', monospace; border-top: 1px dashed rgba(255, 255, 255, 0.1);
+        padding-top: 10px; margin-top: auto; padding-bottom: 20px;
+    }
+    
+    /* --- Main Content Area (КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: В ОДНУ КОЛОНКУ) --- */
+    .main-content {
+        margin-left: var(--sidebar-width); 
+        padding: 40px 40px; 
+        flex-grow: 1;
+        position: relative; 
+        z-index: 10; 
+        min-height: 100vh; 
+        display: flex; /* Добавлено для центрирования контента */
+        justify-content: center; /* Центрирование по горизонтали */
+    }
+
+    /* Обертка для контента, чтобы он не был слишком широким */
+    .content-wrapper {
+        width: 100%;
+        max-width: 800px; /* Ограничиваем максимальную ширину контента */
+        display: flex;
+        flex-direction: column; /* Контент строго в колонке */
+        gap: 30px; /* Отступы между блоками */
+    }
+
+    /* --- Стили для секций (взяты из help.html) --- */
+    .content-h2 {
+        font-family: 'Orbitron', sans-serif; font-size: 2.2rem; color: var(--text-color);
+        margin-bottom: 30px; text-shadow: 0 0 5px var(--accent-glow);
+        display: flex; align-items: center; gap: 10px;
+    }
+    .content-h2 span { font-size: 1.2em; color: var(--accent-glow); }
+
+    .data-block {
+        background: var(--glass-bg); backdrop-filter: blur(10px); border-radius: 15px;
+        padding: 30px; 
+        border: 1px solid rgba(139, 92, 246, 0.5); box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+    }
+    
+    .data-block h3 {
+        font-family: 'Orbitron', sans-serif; color: var(--accent); font-size: 1.8rem;
+        border-left: 5px solid var(--accent-glow); padding-left: 15px;
+        margin-top: 0; margin-bottom: 20px;
+    }
+    .data-block p {
+        color: var(--muted-text); line-height: 1.6; margin-bottom: 15px;
+    }
+    
+    /* --- Блок ВАЖНОЕ --- */
+    .important-block {
+        background: var(--important-bg);
+        border: 1px solid var(--error-red);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 15px rgba(255, 51, 102, 0.5);
+    }
+    .important-block h3 {
+        color: var(--error-red);
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.5rem;
+        margin-top: 0;
+        margin-bottom: 15px;
+        border-left: 4px solid var(--error-red);
+        padding-left: 10px;
+    }
+    .important-block p {
+        color: var(--text-color);
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    .important-block a {
+        color: var(--tg-color);
+        text-decoration: none;
+        font-weight: bold;
+    }
+    
+    /* --- СТИЛИ СТАТИСТИКИ (обновлены для размещения в data-block) --- */
+    .status-datablock-inner {
+        width: 100%;
+        padding: 15px 0;
+        display: flex;
+        justify-content: space-around;
+        gap: 15px;
+        flex-wrap: wrap;
+        border: 1px dashed var(--accent); 
+        border-radius: 8px;
+    }
+
+    .data-item {
+        text-align: center;
+        flex-basis: 30%; 
+        min-width: 100px;
+        padding: 10px 0;
+    }
+    
+    .data-value {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.2rem;
+        color: var(--stat-color);
+        text-shadow: 0 0 8px var(--stat-color);
+        margin-bottom: 5px;
+        display: block;
+    }
+    
+    .data-label {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.9rem;
+        color: var(--muted-text);
+        text-transform: uppercase;
+    }
+
+
+    /* --- Mobile Adaptation --- */
+    @media (max-width: 900px) {
+        body { flex-direction: column; }
+        .sidebar { 
+            width: 100%; height: auto; position: relative; border-right: none;
+            border-bottom: 2px solid var(--accent); box-shadow: 0 2px 20px rgba(139, 92, 246, 0.5);
+            padding: 20px 0 0 0; 
+        }
+        .sidebar nav { display: flex; flex-wrap: wrap; justify-content: center; }
+        .sidebar nav a { flex-grow: 1; text-align: center; border-left: none; border-top: 3px solid transparent; padding: 10px 15px; }
+        
+        .main-content { margin-left: 0; padding: 20px 15px; }
+        .content-wrapper { max-width: 100%; }
+        .content-h2 { font-size: 2rem; }
+        
+        .status-datablock-inner {
+            padding: 10px 0;
+            gap: 10px;
+        }
+        .data-item {
+            flex-basis: 45%; 
+        }
+        .data-value {
+            font-size: 1.5rem;
+        }
+        .data-block { padding: 20px; }
+    }
+
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<div class="sidebar">
+    <h2>[NG] Mainframe</h2>
+    <nav>
+        <a href="index.html" class="active">ГЛАВНАЯ СЕТЬ</a>
+        <a href="help.html">ПОМОЩЬ / ПРАВИЛА</a>
+        <a href="about.html">О ПРОЕКТЕ</a>
+        <a href="https://t.me/NeurroGrad" target="_blank" class="tg-link">TELEGRAM-КАНАЛ</a>
+    </nav>
+    <div class="sidebar-footer">
+        ACCESS PROTOCOL v3.1.2 | STATUS: ONLINE
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="content-wrapper">
+        <h2 class="content-h2"><span>🌌</span> Нейроград - Магистральный Узел</h2>
+
+        <div class="important-block">
+            <h3>ВАЖНОЕ: СИСТЕМНОЕ УВЕДОМЛЕНИЕ</h3>
+            <p>
+                Добро пожаловать, новый Узел! Проблемы с синхронизацией? Попробуйте очистить кэш и куки. Если вы используете ТГ-бота, убедитесь, что вы авторизованы. При сбоях — пишите в <a href="help.html">ПОМОЩЬ / ПРАВИЛА</a>.
+            </p>
+        </div>
+
+
+        <div class="data-block">
+            <h3>[ СЕКЦИЯ 01: СЕТЕВОЙ ДОСТУП ]</h3>
+            <p>Добро пожаловать в Нейроград — цифровую экосистему, управляемую нейросетями и созданную сообществом. Здесь данные — это валюта, а ваш потенциал — безграничен. Готовы войти в Сеть и начать свою историю?</p>
+            <p>Наш мир построен на эстетике **Anime Cyberpunk** и принципе **Децентрализации**. Ваше влияние (Нейроимпульс) определяет ваш статус. Вступайте, чтобы начать генерировать арт и создавать своё будущее.</p>
+        </div>
+
+        <div class="data-block">
+            <h3>[ СЕКЦИЯ 02: АКТИВНЫЙ ДАТА-БЛОК СТАТУСА ]</h3>
+            <div class="status-datablock-inner">
+                <div class="data-item">
+                    <span class="data-value">4.2K</span>
+                    <span class="data-label">АКТИВНЫЕ НОДЫ</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-value">980K+</span>
+                    <span class="data-label">АРТ-ГЕНЕРАЦИЙ</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-value">2 / 50</span>
+                    <span class="data-label">ПРЕЗИДЕНТЫ МИРА</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-value">v3.12</span>
+                    <span class="data-label">QNN ВЕРСИЯ</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-value">ONLINE</span>
+                    <span class="data-label">СЕТЬ</span>
+                </div>
+            </div>
+            <p style="margin-top: 20px; text-align: center;">Статистика обновляется ежечасно, отражая текущий Нейроимпульс системы.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// --- Particle Animation Script ---
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const particles = [];
+function initParticles() {
+    particles.length = 0;
+    for(let i = 0; i < 150; i++){
+        particles.push({
+            x: Math.random()*canvas.width,
+            y: Math.random()*canvas.height,
+            r: Math.random()*1.5+0.8,
+            vx: (Math.random()-0.5)*0.3,
+            vy: (Math.random()-0.5)*0.3,
+            color: `rgba(139, 92, 246, ${0.15+Math.random()*0.2})`
+        });
+    }
+}
+
+initParticles();
+
+function animate(){
+    ctx.fillStyle = "rgba(10, 2, 38, 0.2)"; 
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    for(const p of particles){
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        if(p.x<0||p.x>canvas.width)p.vx*=-1;
+        if(p.y<0||p.y>canvas.height)p.vy*=-1;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle=p.color;
+        ctx.fill();
+    }
+    requestAnimationFrame(animate);
+}
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    initParticles();
+}
+
+window.addEventListener('resize', resizeCanvas);
+animate();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>📜 ЛОР и Мир — Нейроград</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Base Variables and Defaults (Dark Theme) (ВЗЯТО ИЗ ПОМОЩИ) --- */
+        :root{
+            --bg-1:#0a0226; 
+            --accent:#8b5cf6;--accent-2:#6d28d9;--muted:#a79bd6;
+            --glass:rgba(255,255,255,0.06); 
+            --card-bg:rgba(255,255,255,0.01); 
+            --radius:14px;--maxw:1200px;
+            --text-color: #eae6ff;
+            --shadow-color: rgba(0,0,0,0.4); 
+            /* Добавлены переменные для ЛОРа */
+            --high-rank-color: #ffcc33; 
+            --terminal-bg: rgba(0, 0, 0, 0.8);
+            --terminal-text: #00ffaa;
+            --crime-color: #ff3366;
+        }
+
+        /* --- LIGHT MODE (ВЗЯТО ИЗ ПОМОЩИ) --- */
+        .theme-light {
+            --bg-1: #f0f0f8; 
+            --text-color: #2c2541;
+            --muted: #6a677e;
+            --glass: rgba(0,0,0,0.08);
+            --card-bg: rgba(0,0,0,0.01);
+            --shadow-color: rgba(0,0,0,0.1);
+            --terminal-bg: rgba(255, 255, 255, 0.8);
+            --terminal-text: #008855;
+            --crime-color: #cc0033;
+        }
+
+        /* Base Styles */
+        *{box-sizing:border-box}
+        html{scroll-behavior: smooth;} 
+        html,body{height:100%}
+        body{
+            margin:0;font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
+            color:var(--text-color);
+            background-color: var(--bg-1); 
+            -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;padding:48px 24px;display:flex;justify-content:center;align-items:flex-start;gap:24px;min-height:100vh
+        }
+        
+        /* Общий плавный переход для интерактивных элементов */
+        .btn, nav.toc a, .card, .search input, body { 
+            transition: all 0.4s ease-in-out; 
+        }
+
+        .wrap{width:100%;max-width:var(--maxw);display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start}
+        aside{
+            position:sticky;top:28px;height:calc(100vh - 56px);padding:20px;border-radius:var(--radius);
+            background-color: var(--card-bg); 
+            box-shadow:0 8px 30px var(--shadow-color); 
+            backdrop-filter:blur(8px) saturate(120%);overflow:auto;
+            border:1px solid rgba(255,255,255,0.05); 
+        }
+        .theme-light aside {
+          border:1px solid rgba(0,0,0,0.08);
+        }
+
+        .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+        .logo{width:52px;height:52px;border-radius:12px;display:inline-grid;place-items:center;font-family:Orbitron,serif;font-weight:800;font-size:18px;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 6px 24px rgba(107,70,193,0.25)}
+        .brand h4{margin:0;font-size:16px}
+        .brand p{margin:0;font-size:12px;color:var(--muted)}
+        .search{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+        .search input{flex:1;padding:10px 12px;border-radius:10px;border:none;background:var(--glass);color:inherit;outline:none;font-size:14px}
+        
+        .btn{
+            display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;
+            border:1px solid rgba(255,255,255,0.04);
+            background-color: transparent; 
+            cursor:pointer;font-size:13px;color:inherit;text-decoration:none;
+        }
+        .btn:hover{
+            background:linear-gradient(135deg,var(--accent),var(--accent-2)); 
+            color: white;
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 15px rgba(139, 92, 246, 0.4);
+        }
+        .theme-light .btn{border:1px solid rgba(0,0,0,0.08);background-color: transparent;}
+        .theme-light .btn:hover{background:linear-gradient(135deg,var(--accent),var(--accent-2)); color: white;}
+
+
+        nav.toc{display:flex;flex-direction:column;gap:8px}
+        nav.toc a{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;text-decoration:none;color:inherit;font-size:14px}
+        nav.toc a:hover{
+            background-color: rgba(139,92,246,0.06); 
+            padding-left: 18px; 
+        }
+        nav.toc a.active {
+            background-color: rgba(139,92,246,0.15);
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        main{
+            padding:28px;border-radius:18px;
+            background-color: var(--card-bg); 
+            box-shadow:0 8px 30px var(--shadow-color); 
+            backdrop-filter: blur(8px); 
+            border:1px solid rgba(255,255,255,0.05); 
+        }
+        .theme-light main {
+          border:1px solid rgba(0,0,0,0.08);
+        }
+
+        /* Стилизация секций (Усилены для ЛОРа) */
+        main section, main article {
+          margin-bottom: 40px; /* Большие отступы */
+        }
+        main section h2, main article h2 {
+          margin: 0 0 16px 0;
+          font-family: 'Orbitron', serif;
+          font-weight: 800;
+          font-size: 2.2rem; /* Увеличенный размер */
+          color: var(--accent);
+          border-bottom: 2px solid var(--accent);
+          padding-bottom: 10px;
+        }
+        .theme-light main section h2, .theme-light main article h2 {
+          border-bottom: 2px solid var(--accent);
+        }
+        main section h3, main article h3 {
+            font-family: 'Orbitron', serif;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        /* Стили для ссылок в тексте */
+        main a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        main a:hover {
+            text-decoration: underline;
+        }
+        main p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--muted);
+        }
+        main code { 
+            background: var(--glass);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--accent);
+        }
+        
+        header.main-header .actions h1{font-size: 2.5rem; margin-bottom: 10px;}
+        header.main-header p{font-size: 1.1rem;}
+
+        /* --- СТИЛИ ЛОРА --- */
+        .lore-block {
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--glass);
+            margin-bottom: 25px;
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .data-terminal {
+            background: var(--terminal-bg); 
+            border: 1px dashed var(--accent); 
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace; 
+            font-size: 0.9rem;
+            color: var(--terminal-text); 
+            white-space: pre-wrap; 
+            overflow-x: auto; 
+            margin-top: 20px; 
+            line-height: 1.4;
+            border-radius: 8px;
+        }
+        
+        .profession-list {
+            list-style: none; 
+            padding: 0; 
+            margin-top: 15px;
+        }
+        .profession-list li {
+            font-family: 'Share Tech Mono', monospace; 
+            padding: 10px 0;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.1); 
+            color: var(--text-color);
+        }
+        .theme-light .profession-list li {
+            border-bottom: 1px dotted rgba(0, 0, 0, 0.1);
+        }
+        .profession-list li::before {
+            content: '↳'; 
+            color: var(--accent); 
+            margin-right: 10px;
+        }
+        .profession-list li strong {
+            color: var(--high-rank-color);
+        }
+        .profession-list li span.rank {
+            float: right;
+            color: var(--crime-color);
+        }
+
+        .rank-max { 
+            color: var(--high-rank-color); 
+            font-weight: 800; 
+            text-shadow: 0 0 5px var(--high-rank-color); 
+            margin-top: 30px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 1px solid var(--high-rank-color);
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 204, 51, 0.05);
+        }
+
+
+        footer{margin-top:28px;color:var(--muted);font-size:13px;text-align:center}
+        @media (max-width:980px){.wrap{grid-template-columns:1fr;}aside{position:relative;height:auto;order:2}main{order:1}}
+        
+        .bg-glow{position:fixed;left:50%;top:10%;transform:translateX(-50%);width:720px;height:360px;border-radius:50%;pointer-events:none;mix-blend-mode:screen;filter:blur(80px);opacity:0.4;background:radial-gradient(circle at 20% 20%,rgba(139,92,246,0.18),transparent 12%),radial-gradient(circle at 80% 80%,rgba(109,40,217,0.12),transparent 10%);z-index:0}
+        .theme-light .bg-glow{mix-blend-mode:normal;opacity:0.15;}
+
+        header.main-header .actions {
+            display: flex; align-items: center; width: 100%; gap: 8px;
+        }
+        header.main-header .actions h1 { flex-grow: 1; }
+        header.main-header .actions > div { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+        @media (max-width: 600px) {
+            header.main-header .actions { flex-direction: column; align-items: flex-start; }
+            header.main-header .actions > div { margin-top: 10px; }
+        }
+    </style>
+</head>
+<body class="theme-dark">
+    <div class="bg-glow" aria-hidden="true"></div>
+    <div class="wrap">
+        <aside aria-label="Оглавление ЛОРа">
+            <div class="brand">
+                <div class="logo">NG</div>
+                <div>
+                    <h4>Нейроград — ЛОР и Мир</h4>
+                    <p>Справочник по истории и механикам</p>
+                </div>
+            </div>
+            <div class="search" role="search">
+                <input id="search" placeholder="Поиск по ЛОРу: якудза, коины..." />
+                <button class="btn" id="clearSearch" title="Очистить">×</button>
+            </div>
+            <nav class="toc" aria-label="Содержание" style="margin-top:20px;">
+                <a href="#genesis" class="active">❓ Генезис Сети</a>
+                <a href="#hierarchy">🚀 Карьерная Иерархия</a>
+                <a href="#crime">⚔️ Криминальная Архитектура</a>
+                <a href="#gastronomy">🍜 Быт и Гастрономия</a>
+                <a href="#economy-lore">💰 Экономика ЛОРа</a>
+            </nav>
+            <div style="margin-top:16px;text-align:center;font-size:12px;color:var(--muted)">
+                <div class="badge">База Данных ЛОРа: 3.12</div>
+                <div style="margin-top:8px">Дата Записи: <strong>26.10.2025</strong></div>
+            </div>
+        </aside>
+
+        <main>
+            <header class="main-header">
+                <div class="actions">
+                    <h1>📜 О Проекте: Глубокий ЛОР Нейрограда</h1>
+                    <div>
+                        <button class="btn" id="theme-toggle">Тёмная тема</button>
+                    </div>
+                </div>
+                <p>Погрузитесь в историю, иерархию и криминальную архитектуру Нейрограда. Здесь собраны все факты о классах, бандах и экономике города.</p>
+            </header>
+
+            <article id="genesis" class="lore-block">
+                <h2>❓ Генезис Сети и Структура</h2>
+                <p><strong>Нейроград (Neurograd)</strong> — это виртуальный город возможностей, построенный в стиле **киберпанк/аниме**. Мы — Децентрализованная Экосистема, рождённая из праха рухнувших корпоративных гигантов. Наша цель — развитие ИИ-арта и создание увлекательной среды для сообщества.</p>
+                <p><strong>Нейроимпульс (NI)</strong>: Это не просто валюта, а мера вашего влияния и вклада в развитие города. Чем выше ваш NI, тем сильнее ваш сигнал в Сети.</p>
+                
+                <div class="data-terminal">
+                    $ execute: project_summary.sh
+                    > [STATUS: 200 OK] Distributed Ledger initialized.
+                    > Target: Anime Cyberpunk immersion.
+                    > Key Metric: Neuro_Impulse (NI).
+                </div>
+            </article>
+
+            <article id="hierarchy" class="lore-block">
+                <h2>🚀 Карьерная Иерархия: Префиксы и Классы</h2>
+                <p>Профессия определяет ваш путь и префикс. Повышая свой NI, вы открываете доступ к более высоким и влиятельным рангам. Классификация в Нейрограде крайне жёсткая.</p>
+
+                <h3>Ранговая Лестница</h3>
+                <ul class="profession-list">
+                    <li>[АРТИСТ] - Генераторы самого ценного и детализированного нейро-арта.</li>
+                    <li>[ХАКЕР] - Мастера цифрового взлома и обхода систем.</li>
+                    <li>[КОРПОРАТ] - Представитель старых, но всё ещё влиятельных структур.</li>
+                    <li>[МИГРАНТ] - Новые узлы, только что подключившиеся к Магистрали. <span class="rank" style="color:var(--muted)">НИЗКИЙ РИСК</span></li>
+                    <li>[ДАУН] - Пользователи с низким NI, неактивные или нарушающие минимальные протоколы. <span class="rank" style="color:var(--crime-color)">ПРОТОКОЛ АНТИ-СПАМ</span></li>
+                </ul>
+                
+                <p class="rank-max">
+                    <strong>ВЫСШИЙ ПРЕФИКС: ПРЕЗИДЕНТ МИРА 👑 (WORLD PRESIDENT)</strong>
+                </p>
+                <p style="text-align: center;">Этот легендарный префикс присваивается **исключительно 50-ти** наиболее влиятельным участникам сети. Это не должность, а символ абсолютного доминирования и контроля.</p>
+            </article>
+
+            <article id="crime" class="lore-block">
+                <h2>⚔️ Криминальная Архитектура: Банды и Оружие</h2>
+                <p>Теневая сторона Нейрограда процветает. Контроль над районами и потоками данных ведётся через банды и черный рынок вооружения.</p>
+
+                <h3>Криминальные Классы</h3>
+                <ul class="profession-list">
+                    <li>[ГАНГСТЕР] - Управляет теневыми потоками данных и ресурсов, контролирует черный рынок. <span class="rank" style="color:var(--crime-color)">ВЫСОКИЙ РИСК</span></li>
+                    <li>[ЯКУДЗА] - Элитная криминальная структура, контролирующая крупные сегменты Сети. <span class="rank" style="color:var(--crime-color)">ЭКСТРЕМАЛЬНЫЙ РИСК</span></li>
+                </ul>
+                
+                <h3>Арсенал Сети</h3>
+                <p>Оружие — это цифровые и физические модификации, используемые для нападения и защиты:</p>
+                <ul>
+                    <li style="color:var(--muted)">**Плазменный Катана:** Высокоскоростное физическое оружие, дорогое и редкое.</li>
+                    <li style="color:var(--muted)">**Кодовый Вирус "Омега":** Цифровое оружие для взлома NI-кошельков.</li>
+                </ul>
+            </article>
+
+            <article id="gastronomy" class="lore-block">
+                <h2>🍜 Быт Нейрограда: Еда и Культура</h2>
+                <p>В городе существует своя, уникальная культура потребления. Еда — это не просто пища, а способ получить временные **баффы (усиления)** или восстановить энергию.</p>
+                
+                <ul style="color:var(--muted); margin-top: 15px;">
+                    <li style="margin-bottom: 8px;">**Синтетический Рамен:** Базовый источник энергии, восстанавливает 10% здоровья. Доступен в любом уличной ноде.</li>
+                    <li style="margin-bottom: 8px;">**Нейрокофе:** Временный бафф. Удваивает скорость генерации NI на 30 минут.</li>
+                    <li style="margin-bottom: 8px;">**Чипы Отчаяния:** Теневой, нелегальный товар. Дает случайный, но сильный эффект (как положительный, так и отрицательный).</li>
+                </ul>
+            </article>
+
+            <article id="economy-lore" class="lore-block">
+                <h2>💰 Экономика ЛОРа: Данные и Коины</h2>
+                <p>Основной ресурс в Нейрограде — это **качественные, уникальные данные**, воплощенные в виде **Нейроимпульса (NI)**. Вторичная валюта — **Коины**, которые используются для транзакций, покупки товаров и оплаты услуг клана.</p>
+                <p>Вся экономика строится на обороте трех ключевых сущностей:</p>
+                <ol style="color:var(--muted); margin-top: 15px;">
+                    <li><strong>НИ (Neuro Impulse):</strong> Репутация и Влияние. Нельзя купить, только заработать.</li>
+                    <li><strong>Коины (Coins):</strong> Универсальная игровая валюта. Зарабатывается на квестах.</li>
+                    <li><strong>Артефакты:</strong> Редкие предметы, оружие или модификации. Обладают самой высокой ценностью на черном рынке.</li>
+                </ol>
+            </article>
+
+            <footer>© Нейроград — команда школьников на крыше. <br> Сделано с любовью и парой энергетиков.</footer>
+        </main>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'neurograd-theme';
+        const body = document.body;
+        const themeToggle = document.getElementById('theme-toggle');
+
+        // 1. Theme Initialization & Toggle
+        function initializeTheme() {
+            let theme = localStorage.getItem(STORAGE_KEY) || 'dark';
+            if (theme === 'light') {
+                body.classList.remove('theme-dark');
+                body.classList.add('theme-light');
+                themeToggle.innerText = 'Светлая тема';
+            } else {
+                body.classList.remove('theme-light');
+                body.classList.add('theme-dark');
+                themeToggle.innerText = 'Тёмная тема';
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = body.classList.contains('theme-dark');
+            if (isDark) {
+                body.classList.remove('theme-dark');
+                body.classList.add('theme-light');
+                themeToggle.innerText = 'Светлая тема';
+                localStorage.setItem(STORAGE_KEY, 'light');
+            } else {
+                body.classList.remove('theme-light');
+                body.classList.add('theme-dark');
+                themeToggle.innerText = 'Тёмная тема';
+                localStorage.setItem(STORAGE_KEY, 'dark');
+            }
+        }
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', toggleTheme);
+            initializeTheme(); // Apply saved theme on load
+        }
+
+        // 2. Search Functionality (Updated to check for lore-block, article, and section)
+        const search = document.getElementById('search');
+        const clear = document.getElementById('clearSearch');
+        if (search) {
+            search.addEventListener('input', () => filterDocs(search.value));
+            clear.addEventListener('click', () => {
+                search.value = '';
+                filterDocs('');
+                search.focus();
+            });
+        }
+
+        function filterDocs(q) {
+            q = q.trim().toLowerCase();
+            
+            // Фильтрация статей ЛОРа
+            document.querySelectorAll('main article[id], main section[id]').forEach(el => {
+                const text = el.innerText.toLowerCase();
+                if (!q) {
+                    el.style.display = 'block';
+                    return;
+                }
+                el.style.display = text.includes(q) ? 'block' : 'none';
+            });
+            
+            // Фильтрация TOC
+            document.querySelectorAll('aside nav.toc a').forEach(a => {
+                a.style.opacity = (!q || a.innerText.toLowerCase().includes(q)) ? '1' : '0.4';
+            });
+        }
+
+        // 3. Accessibility for Navigation
+        document.querySelectorAll('aside nav.toc a').forEach(a => {
+             // Проверяем, если ссылка ведет на текущий хеш
+            if (a.getAttribute('href') === window.location.hash) {
+                document.querySelectorAll('aside nav.toc a').forEach(item => item.classList.remove('active'));
+                a.classList.add('active');
+            }
+            // Добавляем обработчик для плавного скролла и активации
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = a.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    window.history.pushState(null, null, a.getAttribute('href'));
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Обновление активного состояния
+                    document.querySelectorAll('aside nav.toc a').forEach(item => item.classList.remove('active'));
+                    a.classList.add('active');
+                }
+            });
+        });
+
+        // Дополнительная функция для автоматической активации при скролле (опционально, но полезно для "огромного" сайта)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const id = entry.target.getAttribute('id');
+                const link = document.querySelector(`aside nav.toc a[href="#${id}"]`);
+
+                if (entry.isIntersecting && link) {
+                    // Убедимся, что секция находится близко к верхней части экрана
+                    const rect = entry.target.getBoundingClientRect();
+                    if (rect.top >= 0 && rect.top <= window.innerHeight * 0.5) {
+                        document.querySelectorAll('aside nav.toc a').forEach(item => item.classList.remove('active'));
+                        link.classList.add('active');
+                    }
+                }
+            });
+        }, { rootMargin: "0px 0px -50% 0px" });
+
+        document.querySelectorAll('main article[id], main section[id]').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

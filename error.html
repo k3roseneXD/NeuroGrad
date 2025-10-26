@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ошибка — Нейроград</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="lines" id="lines"></div>
+
+<div class="main-title">Такого пункта не существует!</div>
+
+<script>
+const linesContainer = document.getElementById('lines');
+for(let i=0;i<50;i++){
+  const line = document.createElement('div');
+  line.className = 'line';
+  line.style.left = Math.random() * 100 + '%';
+  line.style.animationDuration = (5 + Math.random() * 5) + 's';
+  linesContainer.appendChild(line);
+}
+</script>

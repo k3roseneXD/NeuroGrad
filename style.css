@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  background: linear-gradient(135deg, #0a0020, #1a0033, #000033);
+  color: #eaeaff;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* 🔹 Анимированные линии */
+.lines {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  top: 0;
+  left: 0;
+}
+
+.line {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  background: rgba(140, 0, 255, 0.2);
+  animation: moveLine linear infinite;
+}
+
+@keyframes moveLine {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(-100%); }
+}
+
+/* 🔹 Верхнее меню */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background: rgba(0, 0, 30, 0.4);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 15px rgba(100, 0, 255, 0.4);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 28px;
+  color: #b785ff;
+  text-shadow: 0 0 15px #b785ff;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-buttons a {
+  color: #e6e6ff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 15px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.nav-buttons a:hover {
+  background: rgba(160, 0, 255, 0.2);
+  box-shadow: 0 0 10px rgba(160, 0, 255, 0.4);
+}
+
+/* 🔹 Контент */
+.container {
+  text-align: center;
+  margin-top: 100px;
+  z-index: 2;
+  position: relative;
+}
+
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 42px;
+  color: #d2b3ff;
+  text-shadow: 0 0 25px #9a5cff;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #cfcaff;
+  opacity: 0.9;
+  text-shadow: 0 0 10px #a55cff;
+  margin-bottom: 40px;
+}
+
+/* 🔹 Текстовые блоки */
+.glow-box {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 25px;
+  width: 70%;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 0 25px rgba(150, 0, 255, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+p, li {
+  line-height: 1.7;
+  font-size: 16px;
+  color: #eaeaff;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li::before {
+  content: "✦ ";
+  color: #b785ff;
+}
+
+/* 🔹 Адаптив */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+  .nav-buttons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  h1 {
+    font-size: 32px;
+  }
+  .glow-box {
+    width: 90%;
+  }
+}

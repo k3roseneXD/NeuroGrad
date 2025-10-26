@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔒 Вход в Нейроград</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+    /* --- Variables and Transitions --- */
+    :root {
+        --bg-color: #030019;
+        --dark-bg: #0a0226;
+        --accent: #8b5cf6; /* Фиолетовый акцент */
+        --accent-glow: #b366ff;
+        --text-color: #eae6ff;
+        --muted-text: #a79bd6;
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --input-bg: rgba(255, 255, 255, 0.08);
+        --transition-duration: 0.4s;
+    }
+
+    * { box-sizing: border-box; transition: all var(--transition-duration) ease-in-out; }
+    
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', sans-serif;
+        color: var(--text-color);
+        background: var(--dark-bg);
+        overflow: hidden;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: radial-gradient(circle at center, var(--dark-bg) 0%, var(--bg-color) 100%);
+    }
+
+    /* --- Canvas (Placeholder for particles) --- */
+    #bgCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+    }
+
+    /* --- Login Container (The central glowing form) --- */
+    .login-container {
+        width: 100%;
+        max-width: 400px;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        
+        /* Киберпанк-стекло эффект */
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px) saturate(150%);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(139, 92, 246, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 10;
+    }
+
+    .logo {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--accent);
+        margin-bottom: 5px;
+        text-shadow: 0 0 10px var(--accent-glow);
+    }
+    
+    .login-container h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.4rem;
+        color: var(--text-color);
+        margin: 0 0 30px 0;
+    }
+
+    /* --- Form Elements --- */
+    .input-group {
+        margin-bottom: 25px; /* Увеличил отступ, так как нет разделителя */
+        text-align: left;
+    }
+
+    .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted-text);
+        font-size: 0.9rem;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 14px 18px;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        border-radius: 10px;
+        background: var(--input-bg);
+        color: var(--text-color);
+        font-size: 1rem;
+        outline: none;
+    }
+
+    .input-group input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+    }
+
+    /* --- Action Button --- */
+    .main-button {
+        width: 100%;
+        padding: 16px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-color);
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    /* Вход по Логину/Паролю */
+    .login-button {
+        background: linear-gradient(135deg, var(--accent), #6d28d9);
+        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+    }
+
+    .login-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6);
+    }
+
+    /* Дополнительные ссылки */
+    .links {
+        margin-top: 25px;
+        font-size: 0.9rem;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .links a {
+        color: var(--muted-text);
+        text-decoration: none;
+        padding-bottom: 2px;
+        border-bottom: 1px dotted transparent;
+    }
+
+    .links a:hover {
+        color: var(--accent-glow);
+        border-bottom: 1px dotted var(--accent-glow);
+    }
+
+    /* Кнопка "На главную" */
+    .back-button {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted-text);
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        background: var(--glass-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .back-button:hover {
+        color: var(--text-color);
+        background: rgba(139, 92, 246, 0.1);
+        transform: translateX(-5px);
+    }
+
+    @media (max-width: 500px) {
+        .login-container {
+            margin: 20px;
+            padding: 30px 20px;
+        }
+        .back-button {
+            top: 15px;
+            left: 15px;
+            padding: 8px 12px;
+        }
+        .links {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<a href="index.html" class="back-button">
+    &larr; На главную
+</a>
+
+<div class="login-container">
+    <div class="logo">NG</div>
+    <h2>ВХОД В НЕЙРОГРАД</h2>
+    
+    <form onsubmit="alert('Имитация входа... В боевом режиме здесь будет проверка данных на сервере.'); return false;">
+        <div class="input-group">
+            <label for="username">ЛОГИН / E-MAIL</label>
+            <input type="text" id="username" required>
+        </div>
+        <div class="input-group">
+            <label for="password">ПАРТНЕРСКИЙ КЛЮЧ (ПАРОЛЬ)</label>
+            <input type="password" id="password" required>
+        </div>
+        
+        <button type="submit" class="main-button login-button">
+            ПОДТВЕРДИТЬ ВХОД
+        </button>
+    </form>
+
+    <div class="links">
+        <a href="#" onclick="alert('Функция восстановления ключа временно отключена.');">Забыли ключ?</a>
+        <a href="register.html">Нужен новый аккаунт?</a>
+    </div>
+</div>
+
+<script>
+// --- Particle Animation Script (Same as index.html) ---
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const particles = [];
+for(let i = 0; i < 150; i++){
+    particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: Math.random()*1.5+0.8,
+        vx: (Math.random()-0.5)*0.3,
+        vy: (Math.random()-0.5)*0.3,
+        color: `rgba(139, 92, 246, ${0.15+Math.random()*0.2})`
+    });
+}
+
+function animate(){
+    // Уменьшенное затирание хвостов для "текучести" фона
+    ctx.fillStyle = "rgba(10, 2, 38, 0.2)"; 
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    for(const p of particles){
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        if(p.x<0||p.x>canvas.width)p.vx*=-1;
+        if(p.y<0||p.y>canvas.height)p.vy*=-1;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle=p.color;
+        ctx.fill();
+    }
+    requestAnimationFrame(animate);
+}
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);
+animate();
+</script>
+
+</body>
+</html>
